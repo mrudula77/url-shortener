@@ -37,6 +37,10 @@ Java 21 · Spring Boot 3.5 · MySQL · Redis · Spring Data JPA · Lombok
 | GET | /{shortCode} | Redirect to original URL |
 | GET | /analytics/{shortCode} | View click stats |
 
+## Swagger UI
+Run the project and visit:
+http://localhost:8080/swagger-ui/index.html
+
 ## Sample Request
 POST /shorten
 {
