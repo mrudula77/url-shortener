@@ -36,7 +36,24 @@ public class UrlService {
     }
 
     // Create short URL
-    public String createShortUrl(String originalUrl, int expiryDays) {
+    public String createShortUrl(String originalUrl, int expiryDays, String customAlias) {
+
+        // If custom alias provided, use it directly
+        if (customAlias != null && !customAlias.isEmpty()) {
+            // Check if alias already taken
+            if (urlRepository.findByShortCode(customAlias).isPresent()) {
+                throw new RuntimeException("Alias already taken");
+            }
+            UrlMapping mapping = new UrlMapping();
+            mapping.setOriginalUrl(originalUrl);
+            mapping.setShortCode(customAlias);
+            mapping.setExpiryDate(LocalDateTime.now().plusDays(expiryDays));
+            urlRepository.save(mapping);
+            redisTemplate.opsForValue().set(
+                    customAlias, originalUrl, 1, TimeUnit.DAYS
+            );
+            return baseUrl + "/" + customAlias;
+        }
 
         // Check if URL already shortened
         var existing = urlRepository.findByOriginalUrl(originalUrl);

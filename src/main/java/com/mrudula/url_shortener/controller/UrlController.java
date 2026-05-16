@@ -26,8 +26,9 @@ public class UrlController {
         int expiryDays = Integer.parseInt(
                 request.getOrDefault("expiryDays", "30")
         );
+        String customAlias = request.get("customAlias");
 
-        String shortUrl = urlService.createShortUrl(originalUrl, expiryDays);
+        String shortUrl = urlService.createShortUrl(originalUrl, expiryDays, customAlias);
         return ResponseEntity.ok(Map.of("shortUrl", shortUrl));
     }
 
